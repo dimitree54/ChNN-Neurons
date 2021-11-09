@@ -5,6 +5,7 @@ plugins {
 repositories {
 	mavenCentral()
 	maven {
+		name = "GitHubPackages"
 		url = uri("https://maven.pkg.github.com/dimitree54/chnn-library")
 		credentials {
 			username = System.getenv("GITHUB_ACTOR")
