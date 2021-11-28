@@ -1,4 +1,5 @@
 plugins {
+	id("maven-publish")
 	kotlin("jvm") version "1.6.0"
 }
 
@@ -42,4 +43,24 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 tasks.test {
 	useJUnitPlatform()
 	maxParallelForks = 8
+}
+
+publishing {
+	publications {
+		create<MavenPublication>("default") {
+			from(components["java"])
+			// Include any other artifacts here, like javadocs
+		}
+	}
+
+	repositories {
+		maven {
+			name = "GitHubPackages"
+			url = uri("https://maven.pkg.github.com/dimitree54/chnn-neurons")
+			credentials {
+				username = System.getenv("GITHUB_ACTOR")
+				password = System.getenv("GITHUB_TOKEN")
+			}
+		}
+	}
 }
