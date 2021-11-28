@@ -16,9 +16,7 @@ internal class ContestParticipantsTest{
 	@Test
 	fun testContestParticipants(){
 		CONTEST_NEURON_SAMPLERS.forEach {
-			println("Start ${it.name} neurons sampler test")
 			testMemoryUsageAndRuntimeOfSampler(it)
-			println("${it.name} neurons sampler ok")
 		}
 	}
 
