@@ -9,10 +9,28 @@ import we.rashchenko.utils.randomIds
 import java.util.*
 import kotlin.system.measureTimeMillis
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
+internal class ContestParticipantsTest{
+	@Test
+	fun testContestParticipants(){
+		CONTEST_NEURON_SAMPLERS.forEach {
+			println("Start ${it.name} neurons sampler test")
+			testMemoryUsageAndRuntimeOfSampler(it)
+			println("${it.name} neurons sampler ok")
+		}
+	}
 
-internal abstract class NeuronSamplerTest {
+	@Test
+	fun testForNamesUniqueness() {
+		val occupiedNames = mutableSetOf<String>()
+		CONTEST_NEURON_SAMPLERS.forEach {
+			assertFalse{ it.name in occupiedNames }
+			occupiedNames.add(it.name)
+		}
+	}
+
 	private val timeLimitMillisForSampler = 20000L
 	private val memoryLimitBytesForSampler = 100 * 1024 * 1024  // 10 Mb max for empty sampler after work
 	private val numNeurons = 100000
@@ -23,34 +41,30 @@ internal abstract class NeuronSamplerTest {
 	private val numNeuronTicks = 1000000
 	private val numNeighboursForNeuron = 100
 
-	abstract fun getInstance(): NeuronsSampler
-
-	@Test
-	fun testMemoryUsageAndRuntimeOfSampler() {
+	private fun testMemoryUsageAndRuntimeOfSampler(neuronsSampler: NeuronsSampler) {
 		val r = Random()
-		val sampler = getInstance()
 		val neurons = mutableListOf<Neuron>()
 		val neuronToTest: Neuron
 		measureTimeMillis {
 			// imitating init
 			repeat(numNeurons) {
-				neurons.add(sampler.next(it))
+				neurons.add(neuronsSampler.next(it))
 			}
 			// imitating work
 			repeat(numSamplerTicks) {
 				val id = r.nextInt(neurons.size)
-				sampler.reportFeedback(id, Feedback(r.nextDouble() * 2 - 1))
+				neuronsSampler.reportFeedback(id, Feedback(r.nextDouble() * 2 - 1))
 
 				val i = r.nextInt(neurons.size)
-				sampler.reportDeath(id)
+				neuronsSampler.reportDeath(id)
 				neurons.removeAt(i)
-				neurons.add(sampler.next(id))
+				neurons.add(neuronsSampler.next(id))
 			}
-			neuronToTest = sampler.next(-1)  // neuron from the middle of sequence
-			neurons.forEachIndexed { i, _ -> sampler.reportDeath(i) }
+			neuronToTest = neuronsSampler.next(-1)  // neuron from the middle of sequence
+			neurons.forEachIndexed { i, _ -> neuronsSampler.reportDeath(i) }
 		}.also { assertTrue(it < timeLimitMillisForSampler) }
 
-		val sizeAfter = GraphLayout.parseInstance(sampler).totalSize()
+		val sizeAfter = GraphLayout.parseInstance(neuronsSampler).totalSize()
 		assertTrue(sizeAfter < memoryLimitBytesForSampler)
 
 		testMemoryUsageAndRuntimeOfTheNeuron(neuronToTest)
