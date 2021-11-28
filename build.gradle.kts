@@ -1,5 +1,5 @@
 plugins {
-	kotlin("jvm") version "1.5.31"
+	kotlin("jvm") version "1.6.0"
 }
 
 repositories {
@@ -14,10 +14,14 @@ repositories {
 	}
 }
 
+@Suppress("GradlePackageUpdate")
 dependencies {
 	implementation(kotlin("stdlib"))
-	implementation("we.rashchenko:chnn-library:v0.1.0")
 	testImplementation(kotlin("test-junit5"))
+}
+
+dependencies {
+	implementation("we.rashchenko:chnn-library:v0.1.1")
 	testImplementation("org.openjdk.jol:jol-core:0.16")
 }
 
