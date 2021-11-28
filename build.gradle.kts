@@ -22,7 +22,7 @@ dependencies {
 }
 
 dependencies {
-	implementation("we.rashchenko:chnn-library:v0.1.1")
+	implementation("we.rashchenko:chnn-library:v1.1.2")
 	testImplementation("org.openjdk.jol:jol-core:0.16")
 }
 
