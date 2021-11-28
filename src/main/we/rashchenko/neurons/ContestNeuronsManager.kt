@@ -12,6 +12,7 @@ val CONTEST_NEURON_SAMPLERS = listOf(
     StochasticNeuronSampler(),
 )
 
+@Suppress("unused")
 val CONTEST_NEURONS_MANAGER = NeuronsManager().also { manager ->
     CONTEST_NEURON_SAMPLERS.forEach {
         manager.add(it)
