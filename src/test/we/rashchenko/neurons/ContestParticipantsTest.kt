@@ -16,7 +16,7 @@ internal class ContestParticipantsTest{
 	@Test
 	fun testContestParticipants(){
 		CONTEST_NEURON_SAMPLERS.forEach {
-			testMemoryUsageAndRuntimeOfSampler(it)
+			testMemoryUsageAndRuntimeOfSampler(it())
 		}
 	}
 

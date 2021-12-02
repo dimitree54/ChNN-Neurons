@@ -6,15 +6,15 @@ import we.rashchenko.neurons.zoo.HebbianNeuronSampler
 import we.rashchenko.neurons.zoo.StochasticNeuronSampler
 
 val CONTEST_NEURON_SAMPLERS = listOf(
-    HebbianNeuronSampler(),
-    HebbianHappyNeuronSampler(),
-    HebbianAngryNeuronSampler(),
-    StochasticNeuronSampler(),
+    ::HebbianNeuronSampler,
+    ::HebbianHappyNeuronSampler,
+    ::HebbianAngryNeuronSampler,
+    ::StochasticNeuronSampler,
 )
 
 @Suppress("unused")
-val CONTEST_NEURONS_MANAGER = NeuronsManager().also { manager ->
+fun getContestManager() = NeuronsManager().also { manager ->
     CONTEST_NEURON_SAMPLERS.forEach {
-        manager.add(it)
+        manager.add(it())
     }
 }
