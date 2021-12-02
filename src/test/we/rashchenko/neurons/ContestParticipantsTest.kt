@@ -24,8 +24,19 @@ internal class ContestParticipantsTest{
 	fun testForNamesUniqueness() {
 		val occupiedNames = mutableSetOf<String>()
 		CONTEST_NEURON_SAMPLERS.forEach {
-			assertFalse{ it.name in occupiedNames }
-			occupiedNames.add(it.name)
+			val name = it().name
+			assertFalse{ name in occupiedNames }
+			occupiedNames.add(name)
+		}
+	}
+
+	@Test
+	fun testNamePersistent() {
+		CONTEST_NEURON_SAMPLERS.forEach {
+			val name = it().name
+			repeat(100){
+				assertEquals(name, it().name)
+			}
 		}
 	}
 
