@@ -48,6 +48,7 @@ open class StochasticNeuron(private val initWeight: Double, private val lr: Doub
 class StochasticNeuronSampler : NeuronsSampler {
 	private val random = Random()
 	override val name: String = "StochasticNeuron"
+	override val author: String = "dimitree54"
 	override fun next(id: Int): Neuron {
 		val randomInitWeight = random.nextDouble()
 		val randomLr = random.nextDouble() / 5 - 0.1

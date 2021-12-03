@@ -11,6 +11,7 @@ open class HebbianAngryNeuron : HebbianNeuron() {
 
 class HebbianAngryNeuronSampler : NeuronsSampler {
 	override val name: String = "HebbianAngryNeuron"
+	override val author: String = "dimitree54"
 	override fun next(id: Int): Neuron {
 		return HebbianAngryNeuron()
 	}

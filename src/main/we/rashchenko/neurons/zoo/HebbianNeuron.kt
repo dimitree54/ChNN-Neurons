@@ -43,6 +43,7 @@ open class HebbianNeuron : Neuron {
 
 class HebbianNeuronSampler : NeuronsSampler {
 	override val name: String = "HebbianNeuron"
+	override val author: String = "dimitree54"
 	override fun next(id: Int): Neuron {
 		return HebbianNeuron()
 	}
