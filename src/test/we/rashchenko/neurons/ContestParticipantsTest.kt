@@ -40,12 +40,12 @@ internal class ContestParticipantsTest{
 		}
 	}
 
-	private val timeLimitMillisForSampler = 20000L
+	private val timeLimitMillisForSampler = 40000L
 	private val memoryLimitBytesForSampler = 100 * 1024 * 1024  // 10 Mb max for empty sampler after work
 	private val numNeurons = 100000
 	private val numSamplerTicks = 1000000
 
-	private val timeLimitMillisForNeuron = 2000L
+	private val timeLimitMillisForNeuron = 4000L
 	private val memoryLimitBytesForNeuron = 1024 * 1024  // 1 Mb max per Neuron
 	private val numNeuronTicks = 1000000
 	private val numNeighboursForNeuron = 100
@@ -61,6 +61,8 @@ internal class ContestParticipantsTest{
 			}
 			// imitating work
 			repeat(numSamplerTicks) {
+				neuronsSampler.name
+				neuronsSampler.author
 				val id = r.nextInt(neurons.size)
 				neuronsSampler.reportFeedback(id, Feedback(r.nextDouble() * 2 - 1))
 
