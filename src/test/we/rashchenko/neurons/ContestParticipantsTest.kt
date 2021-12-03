@@ -5,7 +5,7 @@ import org.openjdk.jol.info.GraphLayout
 import we.rashchenko.base.ExternallyControlledActivity
 import we.rashchenko.base.Feedback
 import we.rashchenko.neurons.inputs.MirroringNeuron
-import we.rashchenko.utils.randomIds
+import we.rashchenko.utils.IDsGenerator
 import java.util.*
 import kotlin.system.measureTimeMillis
 import kotlin.test.assertEquals
@@ -15,7 +15,7 @@ import kotlin.test.assertTrue
 internal class ContestParticipantsTest{
 	@Test
 	fun testContestParticipants(){
-		CONTEST_NEURON_SAMPLERS.forEach {
+		CONTEST_NEURON_SAMPLERS.parallelStream().forEach {
 			testMemoryUsageAndRuntimeOfSampler(it())
 		}
 	}
@@ -83,8 +83,9 @@ internal class ContestParticipantsTest{
 	private fun testMemoryUsageAndRuntimeOfTheNeuron(neuron: Neuron) {
 		val r = Random()
 		// imitating work
+		val ids = IDsGenerator()
 		val fakeNeighboursIds =
-			mutableListOf<Int>().also { neighbours -> repeat(numNeighboursForNeuron) { neighbours.add(randomIds.next()) } }
+			mutableListOf<Int>().also { neighbours -> repeat(numNeighboursForNeuron) { neighbours.add(ids.next()) } }
 		measureTimeMillis {
 			var timeStep = 0L
 			repeat(numNeuronTicks) {
@@ -117,9 +118,10 @@ internal class ContestParticipantsTest{
 
 	private fun testExternalControlling(neuron: Neuron) {
 		val r = Random()
+		val ids = IDsGenerator()
 		// imitating work
 		val fakeNeighboursIds =
-			mutableListOf<Int>().also { neighbours -> repeat(numNeighboursForNeuron) { neighbours.add(randomIds.next()) } }
+			mutableListOf<Int>().also { neighbours -> repeat(numNeighboursForNeuron) { neighbours.add(ids.next()) } }
 
 		val externalActivity = ExternallyControlledActivity()
 		val mirroringNeuron = MirroringNeuron(externalActivity, neuron)
