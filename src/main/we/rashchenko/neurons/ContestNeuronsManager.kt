@@ -1,15 +1,16 @@
 package we.rashchenko.neurons
 
-import we.rashchenko.neurons.zoo.HebbianAngryNeuronSampler
-import we.rashchenko.neurons.zoo.HebbianHappyNeuronSampler
-import we.rashchenko.neurons.zoo.HebbianNeuronSampler
-import we.rashchenko.neurons.zoo.StochasticNeuronSampler
+import we.rashchenko.neurons.zoo.*
 
 val CONTEST_NEURON_SAMPLERS = listOf(
     ::HebbianNeuronSampler,
     ::HebbianHappyNeuronSampler,
     ::HebbianAngryNeuronSampler,
     ::StochasticNeuronSampler,
+    ::ImpostorDeadNeuronSampler,
+    ::ImpostorHyperactiveNeuronSampler,
+    ::ImpostorRandomNeuronSampler,
+    ::PaceMakerNeuronSampler
 )
 
 @Suppress("unused")
