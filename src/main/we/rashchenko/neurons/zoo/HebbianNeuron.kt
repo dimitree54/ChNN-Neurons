@@ -9,8 +9,10 @@ open class HebbianNeuron : Neuron {
 	private val random = Random()
 	private val weights = mutableMapOf<Int, Double>()
 
+	private var activatedOnTimeStep = Long.MIN_VALUE
+
 	private fun initializeNewWeight(): Double {
-		return 0.5
+		return 0.1
 	}
 
 	private var internalActive: Boolean = false
@@ -23,7 +25,7 @@ open class HebbianNeuron : Neuron {
 				internalActive = true
 				weights[sourceId] = it + 0.01
 			} else {
-				weights[sourceId] = it - 0.001
+				weights[sourceId] = it - (0.01 / weights.size)
 			}
 		}
 	}
@@ -37,6 +39,9 @@ open class HebbianNeuron : Neuron {
 
 	override fun update(feedback: Feedback, timeStep: Long) {
 		receivedFeedback = feedback
+		if (timeStep != activatedOnTimeStep) {
+			internalActive = false
+		}
 	}
 }
 
