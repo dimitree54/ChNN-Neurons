@@ -33,9 +33,21 @@ open class StochasticNeuron(private val initWeight: Double, private val lr: Doub
 	override fun getFeedback(sourceId: Int): Feedback = feedbacks.getOrDefault(sourceId, Feedback.NEUTRAL)
 
 	override fun update(feedback: Feedback, timeStep: Long) {
-		activatedOnTouchFrom?.let {
+		activatedOnTouchFrom?.also {
 			feedbacks[it] = feedback
 			weights[it] = weights[it]?.plus(lr * feedback.value)?.clip(0.01, 0.99) ?: initWeight
+		}?:run{
+			// That neuron is not active but receives feedback.
+			// Probably it is from external controller or environment, not from other neurons.
+			// Negative feedback means that it is not ok to be passive,
+			//  so neuron slightly increases all weights to increase chances of being active
+			// Do nothing for positive feedback.
+			if (feedback.value < 0){
+				weights.keys.forEach {
+					feedbacks[it] = feedback
+					weights[it] = weights[it]?.minus(lr * feedback.value)?.clip(0.01, 0.99) ?: initWeight
+				}
+			}
 		}
 		if (timeStep != activatedOnTimeStep) {
 			internalActive = false
